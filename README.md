@@ -42,4 +42,4 @@ The scope of this project is to complete the process and compare two modeling ap
 
 ## Proof of cluster clean up
 I have used my own dev-test subscription for the project, and deleted the clusters. Attached is the screenshot of deletion: <br/>
-<img src= "./images/cluster_delete.jpg">
+<img src= "./images/cluster_delete.png">
