@@ -21,10 +21,10 @@ The dataset is created using tabular data factory function from blobstorage. Tra
 <img src= "./images/hyperdrive_flow.jpg">
 
 **What are the benefits of the parameter sampler you chose?** <br/>
-I have used random parameter sampling. In random sampling, hyperparameter values are randomly selected from the defined search space. It supports discrete and continuous hyperparameters. It also supports early termination of low-performance runs.
+I have used random parameter sampling. In random sampling, hyperparameter values are randomly selected from the defined search space. It supports discrete and continuous hyperparameters. It also supports early termination of low-performance runs. Since random sampling selects random values from given range of values, the performance is fast, and therefore we can use random sampling for initial model run to test and then refine the search space with different values again. Grid search can be very resource expensive as it sweeps exhaustively over the search space.
 
 **What are the benefits of the early stopping policy you chose?** <br/>
-I have selected bandit policy for early termination. It defines an early termination policy based on slack criteria, and a frequency and delay interval for evaluation.
+I have selected bandit policy for early termination. It defines an early termination policy based on slack criteria, and a frequency and delay interval for evaluation. Again the main reason for this policy selection is performance and saving resources. Any run that doesn't fall within the slack factor or slack amount of the evaluation metric with respect to the best performing run will be terminated, thus saving the compute resource. Concretely, the configuration used in my hyperdrive config will evaluate jobs every 1 step and will terminate jobs that are not within 10 percent slack of the best performing job at that particular step. On larger models, this strategy typically saves significant compute time with no impact on the performance of the best model trained.
 
 ## AutoML <br/>
 The best model being selected and registered by AutoML is Voting Ensemble. A voting ensemble is an ensemble machine learning model that combines the predictions from multiple other models. One important parameter to consider and make sure is the experiment timeout. The autoML can sometimes may stuck in long runs during model optimization and selection, therefore it is important to control this parameter. 
@@ -41,4 +41,5 @@ The scope of this project is to complete the process and compare two modeling ap
 3. Spend more time on feature engineering: Some examples where we could improve feature engineering: The marital status has more types ( like divorced, and unknown) but our current script simply take it as binary (married or not). We could also bin the age and create age brackets as features. These are just couple examples that I have quickly thought of.
 
 ## Proof of cluster clean up
-I have used different subscription for the project. 
+I have used my own dev-test subscription for the project, and deleted the clusters. Attached is the screenshot of deletion: <br/>
+<img src= "./images/cluster_delete.jpg">
