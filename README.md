@@ -17,7 +17,17 @@ I have used two different models as assigned by the project:
 
 ## Scikit-learn Pipeline
 **Explaination of the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
-The dataset is created using tabular data factory function from blobstorage. Train.py is the training script- that will be called from sklearn estimator. Logistic Regression model is being defined in the script. The parameters and policy is defined by hyperdrive config function.The next step is to submit the run. Below is the architecture of how the pipeline is set up:<br/>
+The dataset is created using tabular data factory function from blobstorage. Train.py is the training script- that will be called from sklearn estimator. Logistic Regression model is being defined in the script. The parameters and policy is defined by hyperdrive config function. After we define the config function and parameters, we submit and run the experiment.<br/>
+
+A hyperparameter is a parameter used to control the outcome of training the model. Machine learning models require several hyperparameters to build the best model. There is no logical formula for obtaining the best hyperparameter values. These values must be tweaked and analyzed. However we can use different methods on how to fine tune those values to find the best model. Azure ML hyperdrive provides different options to automate hyperparameter tuning and run experiments in parallel to efficiently optimize hyperparameters. There are three methods of parameter samplings:<br/>
+1. Random sampling: In random sampling, hyperparameter values are randomly selected from the defined search space.
+2. Grid sampling: Performs a simple grid search over all possible values.
+3. Bayesian sampling: It picks samples based on how previous samples performed, so that new samples improve the primary metric.<br/>
+
+In this project, I have used random sampling. The rationale is described in a section below. The model itself is defined in the sklearn estimator function as shown in our pipeline. For this binary lassification task, logistic regression model is used. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable. Although the name says regression, it is a classification algorithm that is used to model the probability of a certain class ( in our example whether a customer will subscribe to a term deposit). The hyperparameters for logistic regression model are C (regularization factor) and max_iter (max number of iterations) as defined above in summary.
+
+
+Attached is the snapshot of architecture of how the pipeline is set up:<br/>
 <img src= "./images/hyperdrive_flow.jpg">
 
 **What are the benefits of the parameter sampler you chose?** <br/>
@@ -27,8 +37,14 @@ I have used random parameter sampling. In random sampling, hyperparameter values
 I have selected bandit policy for early termination. It defines an early termination policy based on slack criteria, and a frequency and delay interval for evaluation. Again the main reason for this policy selection is performance and saving resources. Any run that doesn't fall within the slack factor or slack amount of the evaluation metric with respect to the best performing run will be terminated, thus saving the compute resource. Concretely, the configuration used in my hyperdrive config will evaluate jobs every 1 step and will terminate jobs that are not within 10 percent slack of the best performing job at that particular step. On larger models, this strategy typically saves significant compute time with no impact on the performance of the best model trained.
 
 ## AutoML <br/>
-The best model being selected and registered by AutoML is Voting Ensemble. A voting ensemble is an ensemble machine learning model that combines the predictions from multiple other models. One important parameter to consider and make sure is the experiment timeout. The autoML can sometimes may stuck in long runs during model optimization and selection, therefore it is important to control this parameter. 
-
+The best model being selected and registered by AutoML is Voting Ensemble. A voting ensemble is an ensemble machine learning model that combines the predictions from multiple other models. One important parameter to consider and make sure is the experiment timeout. The autoML can sometimes may stuck in long runs during model optimization and selection, therefore it is important to control this parameter. The accuracy of the model is 0.91680. Other metrics are shown below:<br/>
+<img src= "./images/run_metrics.png" width="200" height="300"> <br/> Attached are the PR curve and ROC Curve <br/>
+| PR Curve  | ROC Curve |
+| ------------- | ------------- |
+|  <img src= "./images/PRcurve.png" width="500" height="300"> | <img src= "./images/ROCcurve.png" width="500" height="300"> |
+<br/>
+We can also visualize the regression line as below: <br/>
+ <img src= "./images/regression_line.png" width="500" height="300"> <br/>
 ## Pipeline comparison </br>
 Comparing the accuracy, there is not much significant difference, as both predicts with accuracy around 0.91 percentage. AutoML provides more automation under the hood, and it can select different models, while hyper drive provides more controls of the parameters, but the limitation is that we have to predefine the model in script, and we are limited to use that model. 
 
