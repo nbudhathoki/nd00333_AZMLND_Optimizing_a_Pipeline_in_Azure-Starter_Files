@@ -45,6 +45,7 @@ The best model being selected and registered by AutoML is Voting Ensemble. A vot
 <br/>
 We can also visualize the regression line as below: <br/>
  <img src= "./images/regression_line.png" width="500" height="300"> <br/>
+
 ## Pipeline comparison </br>
 Comparing the accuracy, there is not much significant difference, as both predicts with accuracy around 0.91 percentage. AutoML provides more automation under the hood, and it can select different models, while hyper drive provides more controls of the parameters, but the limitation is that we have to predefine the model in script, and we are limited to use that model. 
 
